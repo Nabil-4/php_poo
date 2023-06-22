@@ -1,7 +1,8 @@
 <?php
 session_start();
 include_once "./config/config.php";
-include_once "./class/listeProduct.php"
+include_once "./class/listeProduct.php";
+include_once "./class/deleteProduct.php";
 ?>
 
 <!DOCTYPE html>
@@ -12,12 +13,20 @@ include_once "./class/listeProduct.php"
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    table {
+        text-align: center;
+    }
+</style>
 
 <body>
     <h1>Liste des produits</h1>
     <?php
     $listeProduit = new ListeProduit();
     $listeProduit->getAllProduit();
+
+    $deleteProduit = new DeleteProduct;
+    $deleteProduit->DeleteProduit();
     ?>
 
     <table class="table table-striped">
@@ -30,6 +39,8 @@ include_once "./class/listeProduct.php"
                 <th scope="col">Avis</th>
                 <th scope="col">Prix</th>
                 <th scope="col">Photo</th>
+                <th scope="col">Modification</th>
+                <th scope="col">Supprimer</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +56,13 @@ include_once "./class/listeProduct.php"
                     <td><?= $avis ?></td>
                     <td><?= $prix ?></td>
                     <td><img src="upload/<?= $img ?>" alt="<?= $img ?>" style="max-width:100px"></td>
+                    <td><a href="modifProduit.php?modif=<?= $id ?>">Modifier</a></td>
+                    <td><a href="listeProduit.php?delete=<?= $id ?>">X</a>
+                        <?php if (isset($_GET['delete'])): ?>
+                            <span><a href="listeProduit.php?delete=<?= $id ?>&confirm=oui">oui</a></span>
+                            <span><a href="listeProduit.php?delete=<?= $id ?>&confirm=non">non</a></span>
+                        <?php endif ?>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </tbody>
@@ -54,3 +72,5 @@ include_once "./class/listeProduct.php"
 </body>
 
 </html>
+
+    
